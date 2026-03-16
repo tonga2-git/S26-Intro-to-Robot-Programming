@@ -25,6 +25,9 @@ class TurtleClient(Node):
         self.declare_parameter('turtleColor', 'red', ParameterDescriptor(description='Color of the turtle'))
         turtleColor = self.get_parameter('turtleColor').get_parameter_value().string_value
         self.turtle_display.color(turtleColor)
+        self.declare_parameter('penSize', 1, ParameterDescriptor(description='Pen size of the turtle'))
+        penSize = self.get_parameter('penSize').get_parameter_value().integer_value
+        self.turtle_display.pensize(penSize)
         #### publisher define ####
         self.twist_pub = self.create_publisher(Twist, 'turtleDrive', 1)
         ##########################
@@ -48,8 +51,8 @@ class TurtleClient(Node):
         if self.turtle.color == 'None':
             self.turtle_display.penup()
         else:
+            self.turtle_display.pendown()
             self.turtle_display.pencolor(self.turtle.color)
-
         self.turtle_display.setpos(self.turtle.turtle_pose.position.x, self.turtle.turtle_pose.position.y)
         
         roll, pitch, yaw = rpy_from_quat(self.turtle.turtle_pose.orientation.x,
